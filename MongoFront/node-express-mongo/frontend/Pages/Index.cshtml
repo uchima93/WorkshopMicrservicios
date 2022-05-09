@@ -1,0 +1,38 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = ".NET Client Co.";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Listado de Clientes</h1>
+</div>
+
+<div style="color: #D8000C; background-color: #FFBABA">
+  @Model.ErrorMessage
+</div> 
+
+<table class="table">
+   <thead>
+      <tr>
+         <th>Nombres</th>
+         <th>Apellidos</th>
+         <th>Correo Electronico</th>
+         <th>Tipo Cliente</th>
+         <th>Fecha Creacion</th>
+      </tr>
+   </thead>
+   <tbody>
+      @foreach (var client in @Model.Clients)
+      {
+         <tr>
+            <td>@client.nombres</td>
+            <td>@client.apellidos</td>
+            <td>@client.correoElectronico</td>
+            <td>@client.tipoCliente</td>
+            <td>@client.fechaCreacion</td>
+         </tr>
+      }
+   </tbody>
+</table>
+

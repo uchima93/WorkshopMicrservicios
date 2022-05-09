@@ -1,0 +1,32 @@
+version: '3'
+services:
+  frontend:
+    build: ./frontend
+    environment: 
+      - backendUrl=http://apiget:3001
+    ports:
+      - "5902:80"
+    depends_on: 
+      - apiget
+  apiget:
+    build: ./apiget
+    command: node index.js
+    ports:
+      - "3001:3001"
+    depends_on:
+      - "mongo"
+  web:
+    build: ./web-site
+    command: node index.js
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "mongo"
+  mongo:
+    image: "mongo"
+    ports:
+      - "27017:27017"
+    volumes: 
+      - mongodbdata:/data/db
+volumes: 
+  mongodbdata:
