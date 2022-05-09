@@ -1,0 +1,161 @@
+openapi: 3.0.3
+
+info:
+  title: Clientes Grupo SID
+  description: API que me permite manipular la informacion de los clientes del Grupo SID
+  termsOfService: https://gruposid.com.do/
+  contact:
+    name: Grupo SID
+    url: https://gruposid.com.do/
+    email: info@gruposid.com.do
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+
+servers:
+- url: https://development.api.gruposid.com.do/v1
+  description: Development server
+- url: https://staging.api.gruposid.com.do/v1
+  description: Staging server
+- url: https://api.gruposid.com.do/v1
+  description: Production server
+
+tags:
+- name: Clientes
+  description: Informacion Clientes Grupo SID
+
+paths:
+  /client:
+    get:
+      tags:
+      - Clientes
+      summary: Deuelve todos los clientes existentes
+      responses:
+        200:
+          description: Operacion Exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+        400:
+          description: Cliente No existe
+    post:
+      tags:
+      - Clientes
+      summary: Ingresar un nuevo cliente
+      operationId: addClient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+        required: true
+      responses:
+        201:
+          description: Cliente Creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Id'
+        400:
+          description: Correo ya existe
+  /client/{clientId}:
+    get:
+      tags:
+      - Clientes
+      summary: Obtener todos los clientes por Id
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Operacion Exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+        400:
+          description: Cliente No existe
+    put:
+      tags:
+      - Clientes
+      summary: Actualizar clientes por Id
+      operationId: updateClient
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cliente'
+        required: true
+      responses:
+        200:
+          description: Cliente Actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Id'
+        400:
+          description: Cliente No existe
+    delete:
+      tags:
+      - Clientes
+      summary: Eliminar Cliente
+      operationId: deleteClient
+      parameters:
+      - name: clientId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        204:
+          description: Cliente Eliminado
+        400:
+          description: Cliente No existe
+      
+components:
+  schemas:
+    Id:
+      type: object
+      properties:
+        id:
+          type: integer
+    Cliente:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          nombres:
+            type: string
+          apellidos:
+            type: string
+          correoElectronico:
+            type: string
+            format: email
+          tipoCliente:
+            type: string
+            enum:
+            - Mayorista
+            - Minorista
+            - Publico
+          fechaCreacion:
+            type: string
+            format: date-time
+        required: 
+          - nombres
+          - apellidos
+          - correoElectronico
+          - tipoCliente
+          - fechaCreacion
