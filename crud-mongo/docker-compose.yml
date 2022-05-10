@@ -2,7 +2,6 @@ version: '3'
 services:
   web:
     image: uchima93/apicrud:v1
-    build: ./web-site
     command: node index.js
     ports:
       - "3000:3000"
@@ -12,7 +11,7 @@ services:
     image: "mongo"
     ports:
       - "27017:27017"
-    volumes: 
-      - mongodbdata:/data/db
-volumes: 
-  mongodbdata:
+    #volumes: 
+    #  - mongodbdata:/data/db
+#volumes: 
+  #mongodbdata:

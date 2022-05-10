@@ -1,15 +1,13 @@
 version: '3'
 services:
   apiget:
-    build: ./apiget
-    command: node index.js
+    image: uchima93/apiget:v1
     ports:
       - "3001:3001"
     depends_on:
       - "mongo"
   web:
-    build: ./web-site
-    command: node index.js
+    image: uchima93/apicrud:v1
     ports:
       - "3000:3000"
     depends_on:

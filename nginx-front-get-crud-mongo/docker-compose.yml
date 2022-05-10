@@ -1,0 +1,44 @@
+version: '3.9'
+services:
+  frontend:
+    image: uchima93/frontendnet:v1
+    environment: 
+      - backendUrl=http://nginx:4000
+    ports:
+      - "5902:80"
+    depends_on: 
+      - nginx
+  apiget:
+    image: uchima93/apiget:v1
+    command: node index.js
+    mem_limit: 40 m #316/26
+    deploy:
+      mode: replicated
+      replicas: 2 
+    ports:
+      - "3001"
+    depends_on:
+      - "mongo"
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - apiget
+    ports:
+      - "4000:4000"
+  web:
+    image: uchima93/apicrud:v1
+    command: node index.js
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "mongo"
+  mongo:
+    image: "mongo"
+    ports:
+      - "27017:27017"
+    volumes: 
+      - mongodbdata:/data/db
+volumes: 
+  mongodbdata:

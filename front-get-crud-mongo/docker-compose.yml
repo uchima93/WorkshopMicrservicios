@@ -1,7 +1,7 @@
-version: '3'
+version: '3.9'
 services:
   frontend:
-    build: ./frontend
+    image: uchima93/frontendnet:v1
     environment: 
       - backendUrl=http://apiget:3001
     ports:
@@ -9,14 +9,16 @@ services:
     depends_on: 
       - apiget
   apiget:
-    build: ./apiget
+    image: uchima93/apiget:v1
     command: node index.js
+    #mem_limit: 32 m #380
+    #mem_limit: 64 m #60
     ports:
       - "3001:3001"
     depends_on:
       - "mongo"
   web:
-    build: ./web-site
+    image: uchima93/apicrud:v1
     command: node index.js
     ports:
       - "3000:3000"
